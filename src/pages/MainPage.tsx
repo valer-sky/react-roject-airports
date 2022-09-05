@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 
-import { fetchAirports } from '../actions/airportActions';
+import { fetchAirports } from '../store/actions/airportActions';
 import { AirportCard } from '../components/AirportCard';
 import { AirportFilter } from '../components/AirportFilter';
 import { AirportSearch } from '../components/AirportSearch';
 import { useAppDispatch, useAppSelector } from '../hook/redux';
 
 export function MainPage() {
-    
-    const {airports, error, loading, } = useAppSelector(state = state.airport)
     const dispatch = useAppDispatch();
+    const {airports, error, loading } = useAppSelector(state => state.airport)
+    
 
     useEffect(() => {
-        dispatch(fetchAirports)
+        dispatch(fetchAirports())
     }, []);
 
     return(

@@ -1,8 +1,8 @@
-import { IAirport, ServerResponse } from './../models/models';
-import { AppDispatch } from './../store/index';
-import { Dispatch } from "@reduxjs/toolkit"
-import axios from "../axios"
-import { airportSlice } from '../store/slices/airportSlice';
+import { IAirport, ServerResponse } from '../../models/models';
+import { AppDispatch } from '../index';
+
+import axios from "../../axios"
+import { airportSlice } from '../slices/airportSlice';
 
 export const fetchAirports = (page: number = 1, count: number = 50) => {
     return async (dispatch: AppDispatch) => {
