@@ -11,8 +11,11 @@ export const fetchAirports = (page: number = 1, count: number = 50) => {
           const response = await axios.get<ServerResponse<IAirport>>('airports', {
             params: {page, count}
           });
-          dispatch(airportSlice.actions.fetchSucces(
-            response.data.results
+          dispatch(airportSlice.actions.fetchSucces({
+            airports: response.data.results,
+            count: response.data.count
+          }
+            
           ))
         } catch(e) {
             dispatch(airportSlice.actions.fetchError(e as Error))
