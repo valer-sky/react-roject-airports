@@ -13,7 +13,7 @@ export function AirportCard({airport}: AirportCardProps) {
     return(
         <div className='border rounded-md py-4 px-6 mb-2  hover:shadow=md hover:transition-all cursor-pointer'
         onClick={clickHandler}>
-            <p className='text-lg font-bold'>{airport.name}</p>
+            <h1 className='text-center text-lg font-bold'>{airport.name}</h1>
             <p>{airport?.region}</p>
             <p>{airport?.type}</p>
             <p>{airport?.country}</p>
