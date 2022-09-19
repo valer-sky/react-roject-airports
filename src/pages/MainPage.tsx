@@ -1,44 +1,49 @@
-import React, { useEffect, useRef } from 'react';
+import React, {useEffect, useRef} from 'react';
+import {AirportSearch} from "../components/airport/AirportSearch";
+import {AirportFilter} from "../components/airport/AirportFilter";
+import {AirportCard} from "../components/airport/AirportCard";
+import {fetchAirports} from "../store/ActionCreators";
+import {useAppDispatch, useAppSelector} from "../hooks/redux";
+import ReactPaginate from 'react-paginate'
 
-import { fetchAirports } from '../store/actions/airportActions';
-import { AirportCard } from '../components/AirportCard';
-import { AirportFilter } from '../components/AirportFilter';
-import { AirportSearch } from '../components/AirportSearch';
-import { useAppDispatch, useAppSelector } from '../hook/redux';
-import ReactPaginate from 'react-paginate';
-
-const ITEMS_PER_PAGE = 50;
+const ITEMS_PER_PAGE = 50
 
 export function MainPage() {
-    const dispatch = useAppDispatch();
-    const {airports, error, loading, count} = useAppSelector(state => state.airport)
-    const page = useRef(1);
+  const {airports, count, loading, error} = useAppSelector(state => state.airportReducer)
+  const page = useRef(1)
+  const dispatch = useAppDispatch()
 
-    const pageCount = Math.ceil(count / ITEMS_PER_PAGE);
+  useEffect(() => {
+    dispatch(fetchAirports(page.current, ITEMS_PER_PAGE))
+  }, [dispatch])
 
-    const pageChangeHandler = ({selected}: {selected: number}) => {
-        page.current = selected + 1;
-        dispatch(fetchAirports(page.current, ITEMS_PER_PAGE));
-    }
-    
+  const pageCount = Math.ceil(count / ITEMS_PER_PAGE)
 
-    useEffect(() => {
-        dispatch(fetchAirports(page.current, ITEMS_PER_PAGE))
-    }, [dispatch]);
+  const pageChangeHandler = ({selected}: {selected: number}) => {
+    page.current = selected + 1
+    dispatch(fetchAirports(page.current, ITEMS_PER_PAGE))
+  }
 
-    return(
-        <div className="conteiner mx-auto max-w-[760px] pt-5">
-            <AirportSearch />
+  return (
+    <div className="container mx-auto p-4 flex justify-center">
+      <div>
+        <AirportSearch />
+        <AirportFilter />
 
-            <AirportFilter />
-            { loading && <p className="text-center text-lg">Loading...</p>}
-            { error && <p className="text-center text-red-600">{error}</p>}
+        {error && <p className="text-red-600">{error}</p>}
 
-            {
-                airports.map(airport => <AirportCard key={airport.id} airport={airport} />)
-            }
+        <div className="min-w-[760px]">
+          { loading && <p className="text-center">Loading...</p> }
 
-            { pageCount && <ReactPaginate
+          {
+            count > 0
+              ? airports.map(airport => (
+                <AirportCard airport={airport} key={airport.id}/>
+              ))
+              : <p className="text-center">No items</p>
+          }
+
+          { pageCount && <ReactPaginate
             breakLabel="..."
             nextLabel=">"
             onPageChange={pageChangeHandler}
@@ -48,12 +53,12 @@ export function MainPage() {
             previousLabel="<"
             containerClassName="flex"
             pageClassName="border py-1 px-3 mr-2"
-            activeClassName="bg-blue-500 text-white"
+            activeClassName="bg-gray-500 text-white"
             previousClassName="border py-1 px-3 mr-2"
             nextClassName="border py-1 px-3"
           /> }
-            
-            
         </div>
-    )
+      </div>
+    </div>
+  )
 }

@@ -1,9 +1,8 @@
 import React, {ChangeEvent, FormEvent, MouseEvent, useState} from 'react'
 import {IAuth} from "../models/models"
-
-// import {login, register} from "../store/ActionCreators";
+import {useAppDispatch} from "../hooks/redux";
+import {login, register} from "../store/ActionCreators";
 import {useNavigate} from "react-router-dom";
-import { useAppDispatch } from '../hook/redux';
 
 export function AuthPage() {
   const dispatch = useAppDispatch()

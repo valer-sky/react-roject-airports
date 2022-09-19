@@ -1,29 +1,32 @@
-import React, { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { Navigation } from './components/Navigation';
-import { useAppDispatch } from './hook/redux';
-import { AirportDitailPage } from './pages/AirportDitailPage';
-import { AuthPage } from './pages/AuthPage';
-import { MainPage } from './pages/MainPage';
-import { fetchHandbooks } from './store/actions/handbookActions';
-
-// import './App.css';
+import React, {useEffect} from 'react'
+import {Routes, Route} from "react-router-dom";
+import {MainPage} from "./pages/MainPage";
+import {AuthPage} from "./pages/AuthPage";
+import {AirportPage} from "./pages/AirportPage";
+import {TheNavigation} from "./components/TheNavigation";
+import {useAppDispatch, useAppSelector} from "./hooks/redux";
+import {fetchHandbooks} from "./store/ActionCreators";
 
 function App() {
-  const dispatch = useAppDispatch();
+  const {} = useAppSelector(state => state.handbookReducer)
+  const dispatch = useAppDispatch()
+
   useEffect(() => {
     dispatch(fetchHandbooks())
   }, [dispatch])
+
   return (
     <>
-      <Navigation />
-      <Routes>
-        <Route path='/' element={<MainPage />}/>
-        <Route path='/auth' element={<AuthPage />}/>
-        <Route path='/airport/:id' element={<AirportDitailPage />}/>
-      </Routes>
+      <TheNavigation/>
+      <div className="container mx-auto pt-4">
+        <Routes>
+          <Route path={'/'} element={<MainPage/>}/>
+          <Route path={'/auth'} element={<AuthPage/>}/>
+          <Route path={'/airport/:id'} element={<AirportPage/>}/>
+        </Routes>
+      </div>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
